@@ -1,31 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 public class BaseConversation : MonoBehaviour, IConversation
 {
     public TextMesh TextGameObject;
-    public string ClueText
-    {
+    public string ClueText {
         get { return TextGameObject.text; }
         set { TextGameObject.text = value; }
     }
-
-    public NPC Parent { get; set; }
-
-    void Start() {
-        GetComponentInChildren<ArrestScript>().Arrest_Pressed += ArrestScript_Arrest_Pressed;
+    public TextMesh NameGameObject;
+    public string NPCName {
+        get { return NPCParent.NPCName; }
     }
 
-    private void ArrestScript_Arrest_Pressed(object sender, EventArgs e)
-    {
-        Debug.Log("You tried to arrest: " + Parent.gameObject.name);
-        if (Parent.GetComponent<Murderer>() != null) {
-            Debug.Log("He is the Murderer! Congratz!");
+    public Transform Parent {
+        get { return transform.parent; }
+        set { transform.parent = value; }
+    }
+
+    private NPC NPCParent { get; set; }
+
+    void Start() {
+        NPCParent = Parent.GetComponent<NPC>();
+        NameGameObject.text = NPCName;
+        GetComponentInChildren<ArrestScript>().Arrest_Pressed += ArrestScript_Arrest_Pressed;
+        GetComponentInChildren<CallLiarScript>().Liar_Pressed += LiarScript_Liar_Pressed;
+    }
+
+    private void LiarScript_Liar_Pressed(object sender, EventArgs e) {
+        Debug.Log(string.Format("You called {0} a liar!", Parent.gameObject.name));
+        if (NPCParent.IsLying) {
+            Debug.Log("They were lying! Listen to them squeel.");
+            ClueText = NPCParent.RealClue;
         } else {
-            Debug.Log("He is not the Murderer! Shit!");
+            Debug.Log("They aren't lying you shitlord! Now you offended them.");
+            ClueText = "I'm not talking to you!";
+        }
+    }
+
+    private void ArrestScript_Arrest_Pressed(object sender, EventArgs e) {
+        Debug.Log("You tried to arrest: " + transform.parent.gameObject.name);
+        if (Parent.GetComponent<Murderer>() != null) {
+            Debug.Log("They are the Murderer! Congratz!");
+        } else {
+            Debug.Log("They are not the Murderer! Shit!");
         }
     }
 

@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System;
 
-public class ArrestScript : MonoBehaviour {
-    
-    public delegate void ButtonPressedHandler(object sender, EventArgs e);
-    public event ButtonPressedHandler Arrest_Pressed;
+public class CallLiarScript : MonoBehaviour {
 
-    void OnMouseDown() {
-        var temp = Arrest_Pressed;
+    public delegate void ButtonPressedHandler(object sender, EventArgs e);
+    public event ButtonPressedHandler Liar_Pressed;
+
+    void OnMouseDown()
+    {
+        var temp = Liar_Pressed;
         if (temp != null) {
             temp(this, EventArgs.Empty);
         }
