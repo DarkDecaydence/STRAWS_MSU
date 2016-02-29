@@ -10,7 +10,8 @@ public class BaseConversation : MonoBehaviour, IConversation
     }
     public TextMesh NameGameObject;
     public string NPCName {
-        get { return NPCParent.NPCName; }
+        get { return NameGameObject.text; }
+        set { NameGameObject.text = value; }
     }
 
     public Transform Parent {
@@ -22,7 +23,7 @@ public class BaseConversation : MonoBehaviour, IConversation
 
     void Start() {
         NPCParent = Parent.GetComponent<NPC>();
-        NameGameObject.text = NPCName;
+        Debug.Log(NPCName);
         GetComponentInChildren<ArrestScript>().Arrest_Pressed += ArrestScript_Arrest_Pressed;
         GetComponentInChildren<CallLiarScript>().Liar_Pressed += LiarScript_Liar_Pressed;
     }

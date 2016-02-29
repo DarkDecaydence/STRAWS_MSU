@@ -45,6 +45,7 @@ public class NPC : MonoBehaviour {
         
         _convMenu = Instantiate(ConversationMenu);
         _convMenu.Parent = transform;
+        _convMenu.NPCName = NPCName;
         CloseConversation();
     }
 
